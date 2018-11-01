@@ -1,7 +1,17 @@
 AcmeAzure
 =
 
-A Docker container used to request an SSL certificate from LetsEncrypt and install onto an Azure WebApp
+A Docker container used to request an SSL certificate from LetsEncrypt and install onto an Azure WebApp. For example:
+
+```
+az container create \
+  --resource-group myResourceGroup \
+  --name acmeazure \
+  --image darranshepherd/acmeazure \
+  --assign-identity $resourceID \
+  --restart-policy Never \
+  --environment-variables EMAIL="foo@bar.com" DOMAIN=bar.com RESOURCE_GROUP=myResourceGroup ZONE_NAME=bar.com APP_SERVICE=appservice
+```
 
 When run in Azure Container Instance, the container will login to the Azure CLI using Managed Service Identity. It initiates a certificate request using [certbot](https://certbot.eff.org/), using the DNS challenge; automatically creating the required challenge TXT record in an Azure DNS Zone. Once created, the certificate is uploaded to an Azure WebApp and the binding configured.
 
@@ -20,6 +30,7 @@ Running
 * Retrieve the Service Principal ID `resourceID=$(az identity show --resource-group myResourceGroup --name myACIId --query id --output tsv)`
 * Assign the Contributor role to the resource group containing the DNS zone and web app.
 * Run container instance `az container create --resource-group myResourceGroup --name acmeazure --image darranshepherd/acmeazure --assign-identity $resourceID --restart-policy Never --environment-variables EMAIL="foo@bar.com" DOMAIN=bar.com RESOURCE_GROUP=myResourceGroup ZONE_NAME=bar.com APP_SERVICE=appservice`
+* Delete ACI instance once complete. `az container delete --resource-group myResourceGroup --name acmeazure`
 
 Instead of running manually, it is recommended to schedule the running of the container instance with Azure Automation.
 
