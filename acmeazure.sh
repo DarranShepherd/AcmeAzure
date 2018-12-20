@@ -1,7 +1,5 @@
 #!/bin/bash
 
-# Short circuit if certificate is still valid for > 30 days
-
 az login --identity --output table
 
 certbotargs=(
@@ -25,4 +23,4 @@ fi
 
 certbot "${certbotargs[@]}"
 
-cp -fR /var/log/letsencrypt/* /etc/letsencrypt/log
+cp /var/log/letsencrypt/letsencrypt.log /etc/letsencrypt/log
