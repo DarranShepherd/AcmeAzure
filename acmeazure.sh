@@ -2,7 +2,8 @@
 
 az login --identity --output table
 
-cp -r /mnt/letsencrypt/ /etc/letsencrypt
+rm /mnt/letsencrypt/letsencrypt.log
+cp -r /mnt/letsencrypt/ /etc/
 
 certbotargs=(
     "certonly"
@@ -25,7 +26,6 @@ fi
 
 certbot "${certbotargs[@]}"
 
-cp -r -L /etc/letsencrypt/ /mnt/letsencrypt
+cp -r -L /etc/letsencrypt/ /mnt/
 
-ls /var/log/letsencrypt
-cat /var/log/letsencrypt/letsencrypt.log
+cp /var/log/letsencrypt/letsencrypt.log /mnt/letsencrypt/
