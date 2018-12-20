@@ -2,8 +2,13 @@
 
 az login --identity --output table
 
-rm /mnt/letsencrypt/letsencrypt.log
-cp -r /mnt/letsencrypt/ /etc/
+if [ -f /mnt/letsencrypt/letsencrypt.log ]; then
+    rm /mnt/letsencrypt/letsencrypt.log
+fi
+if [ -f /mnt/letsencrypt/etc.tar.gz ]; then
+    mkdir /etc/letsencrypt
+    tar -xvfz /mnt/letsencrypt/etc.tar.gz -C /etc/letsencrypt
+fi
 
 certbotargs=(
     "certonly"
@@ -26,6 +31,6 @@ fi
 
 certbot "${certbotargs[@]}"
 
-cp -r -L /etc/letsencrypt/ /mnt/
+tar -cpvzf /mnt/letsencrypt/etc.tar.gz /etc/letsencrypt/*
 
 cp /var/log/letsencrypt/letsencrypt.log /mnt/letsencrypt/
