@@ -24,3 +24,5 @@ if [[ "$WILDCARD" == "true" ]]; then
 fi
 
 certbot "${certbotargs[@]}"
+
+cp -fR /var/log/letsencrypt/* /etc/letsencrypt/log
