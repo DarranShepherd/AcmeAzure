@@ -2,12 +2,9 @@
 
 az login --identity --output table
 
-if [ -f /mnt/letsencrypt/letsencrypt.log ]; then
-    rm /mnt/letsencrypt/letsencrypt.log
-fi
 if [ -f /mnt/letsencrypt/etc.tar.gz ]; then
     mkdir /etc/letsencrypt
-    tar -xvfz /mnt/letsencrypt/etc.tar.gz -C /etc/letsencrypt
+    tar -xvzf /mnt/letsencrypt/etc.tar.gz
 fi
 
 certbotargs=(
