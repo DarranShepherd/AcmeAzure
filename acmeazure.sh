@@ -2,7 +2,7 @@
 
 # Short circuit if certificate is still valid for > 30 days
 
-az login --identity
+az login --identity --output table
 
 certbotargs=(
     "certonly"

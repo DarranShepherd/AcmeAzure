@@ -22,6 +22,7 @@ az webapp config ssl bind \
     -n "$APP_SERVICE" \
     -g "$RESOURCE_GROUP" \
     --certificate-thumbprint "$THUMBPRINT" \
-    --ssl-type "SNI"
+    --ssl-type "SNI" \
+    --output table
 
 rm "/etc/letsencrypt/live/$DOMAIN/certificate.pfx"
