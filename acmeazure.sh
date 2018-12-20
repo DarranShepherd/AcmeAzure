@@ -4,7 +4,6 @@ az login --identity --output table
 
 if [ -f /mnt/letsencrypt/etc.tar.gz ]; then
     tar -xvzf /mnt/letsencrypt/etc.tar.gz -C /
-    ls -Rla /etc/letsencrypt
 fi
 
 certbotargs=(
@@ -28,8 +27,6 @@ fi
 
 certbot "${certbotargs[@]}"
 
-ls -Rla /etc/letsencrypt
 tar -cpvzf /mnt/letsencrypt/etc.tar.gz /etc/letsencrypt/
-tar -tvzf /mnt/letsencrypt/etc.tar.gz
 
 cp /var/log/letsencrypt/letsencrypt.log /mnt/letsencrypt/
