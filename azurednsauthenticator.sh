@@ -1,7 +1,11 @@
 #!/bin/bash
 
 SET_NAME="${CERTBOT_DOMAIN/$ZONE_NAME/}"
-SET_NAME="_acme-challenge.${SET_NAME%?}"
+if [[ "$SET_NAME" == "" ]]; then
+    SET_NAME="_acme-challenge"
+else
+    SET_NAME="_acme-challenge.${SET_NAME%?}"
+fi
 
 az network dns record-set txt add-record \
     --resource-group "$RESOURCE_GROUP" \
