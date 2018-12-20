@@ -27,6 +27,6 @@ fi
 
 certbot "${certbotargs[@]}"
 
-tar -cpzf /mnt/letsencrypt/etc.tar.gz /etc/letsencrypt/
+tar -cpzf /mnt/letsencrypt/etc.tar.gz -C / etc/letsencrypt/
 
 cp /var/log/letsencrypt/letsencrypt.log /mnt/letsencrypt/
