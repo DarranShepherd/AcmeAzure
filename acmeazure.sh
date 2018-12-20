@@ -24,3 +24,5 @@ fi
 certbot "${certbotargs[@]}"
 
 cp /var/log/letsencrypt/letsencrypt.log /etc/letsencrypt/log
+
+cat /etc/letsencrypt/log/letsencrypt.log
