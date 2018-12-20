@@ -2,7 +2,7 @@
 
 az login --identity --output table
 
-mount -t cifs //$STORAGE_ACCOUNT.file.core.windows.net/$STORAGE_SHARE /etc/letsencrypt -o vers=3,username=$STORAGE_ACCOUNT,password=$STORAGE_KEY,dir_mode=0777,file_mode=0777,serverino,mfsymlinks
+cp -r /mnt/letsencrypt/ /etc/letsencrypt
 
 certbotargs=(
     "certonly"
@@ -24,6 +24,8 @@ if [[ "$WILDCARD" == "true" ]]; then
 fi
 
 certbot "${certbotargs[@]}"
+
+cp -r -L /etc/letsencrypt/ /mnt/letsencrypt
 
 ls /var/log/letsencrypt
 cat /var/log/letsencrypt/letsencrypt.log
