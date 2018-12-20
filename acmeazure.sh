@@ -2,6 +2,8 @@
 
 az login --identity --output table
 
+sudo mount -t cifs //$STORAGE_ACCOUNT.file.core.windows.net/$STORAGE_SHARE /etc/letsencrypt -o vers=3,username=$STORAGE_ACCOUNT,password=$STORAGE_KEY,dir_mode=0777,file_mode=0777,serverino,mfsymlinks
+
 certbotargs=(
     "certonly"
     "--manual"
@@ -23,6 +25,6 @@ fi
 
 certbot "${certbotargs[@]}"
 
-cp /var/log/letsencrypt/letsencrypt.log /etc/letsencrypt/log
+cp /var/log/letsencrypt/letsencrypt.log /etc/letsencrypt/log/letsencrypt.log
 
 cat /etc/letsencrypt/log/letsencrypt.log
