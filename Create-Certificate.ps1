@@ -19,7 +19,7 @@ $resourceID=$(az identity show --resource-group $ResourceGroup --name $IdentityN
 az container create `
     --resource-group $ResourceGroup `
     --name $AciName `
-    --image darranshepherd/acmeazure:debug `
+    --image darranshepherd/acmeazure:latest `
     --location $Location `
     --assign-identity $resourceID `
     --restart-policy Never `
