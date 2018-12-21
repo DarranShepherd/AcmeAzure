@@ -1,8 +1,10 @@
 #!/bin/bash
 
-# Short circuit if certificate is still valid for > 30 days
-
 az login --identity --output table
+
+if [ -f /mnt/letsencrypt/etc.tar.gz ]; then
+    tar -xzf /mnt/letsencrypt/etc.tar.gz -C /
+fi
 
 certbotargs=(
     "certonly"
@@ -24,3 +26,7 @@ if [[ "$WILDCARD" == "true" ]]; then
 fi
 
 certbot "${certbotargs[@]}"
+
+tar -cpzf /mnt/letsencrypt/etc.tar.gz -C / etc/letsencrypt/
+
+cp /var/log/letsencrypt/letsencrypt.log /mnt/letsencrypt/
