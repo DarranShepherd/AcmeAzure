@@ -31,12 +31,24 @@ Environment Variables
 
 Running Manually
 -
-* Start a command prompt with the Azure CLI installed
+* Start a Powershell prompt with the Azure CLI installed
 * Create a Managed Service Identity `az identity create --resource-group myResourceGroup --name letsencrypt`
-* Retrieve the Service Principal ID `resourceID=$(az identity show --resource-group myResourceGroup --name myACIId --query id --output tsv)`
-* Assign the Contributor role to the resource group containing the DNS zone and web app.
-* Run container instance `az container create --resource-group myResourceGroup --name acmeazure --image darranshepherd/acmeazure --assign-identity $resourceID --restart-policy Never --azure-file-volume-account-name storageaccountname --azure-file-volume-account-key storageaccountkey --azure-file-volume-share-name certbot --azure-file-volume-mount-path /etc/letsencrypt --environment-variables EMAIL="foo@bar.com" DOMAIN=bar.com RESOURCE_GROUP=myResourceGroup ZONE_NAME=bar.com APP_SERVICE=appservice`
-* Delete ACI instance once complete. `az container delete --resource-group myResourceGroup --name acmeazure`
+* Run [Create-Certificate.ps1](Create-Certificate.ps1) passing in required parameters
+```
+.\Create-Certificate.ps1 `
+    -Email "foo@bar.com" `
+    -ResourceGroup myResourceGroup `
+    -Location "North Europe" `
+    -IdentityName letsencrypt `
+    -StorageAccount storageaccountname `
+    -StorageKey aaaaaaaaaaaaaaaaaaaa== `
+    -StorageShare sharename `
+    -Domain bar.com `
+    -ZoneName bar.com `
+    -AppService appservice `
+    -Wildcard "true" `
+    -AcmeServer "https://acme-staging-v02.api.letsencrypt.org/directory"
+```
 
 Running Automatically
 -
@@ -49,6 +61,8 @@ When the container is run, the [acmeazure.sh](acmeazure.sh) script is run. This 
 The DNS challenge is handled by [azurednsauthenticator.sh](azurednsauthenticator.sh) which creates the required TXT record in an Azure DNS Zone. This is then cleaned up and removed by [azurednscleanup.sh](azurednscleanup.sh).
 
 If the certificate has been issued or renewed, Certbot calls [azurewebappbind.sh](azurewebappbind.sh) which generates a PKCS#12 .pfx file from the certificate chain, uploads it to the web app and creates the SSL binding. If the certificate does not need to be renewed (by checking the mapped Azure Files share, not by checking the certificate on the webapp), this script is not called.
+
+When mounting an Azure Storage Files share into an ACI container, the file system does not support symbolic links - a feature that is required by Certbot. To work around this limitation, all of the Certbot files from /etc/letsencrypt are stored on the mounted file system in a tar zip. This file is then extracted when the container first runs, preserving the symlinks.
 
 Planned Improvements
 -
