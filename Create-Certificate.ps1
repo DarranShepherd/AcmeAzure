@@ -7,7 +7,9 @@ Param(
     $StorageKey,
     $StorageShare,
     $Domain,
+    $DnsResourceGroup,
     $ZoneName,
+    $AppResourceGroup,
     $AppService,
     $Wildcard="false",
     $AciName="letsencrypt",
@@ -15,6 +17,9 @@ Param(
 )
 
 $resourceID=$(az identity show --resource-group $ResourceGroup --name $IdentityName --query id --output tsv)
+
+if ($null -eq $DnsResourceGroup) { $DnsResourceGroup = $ResourceGroup }
+if ($null -eq $AppResourceGroup) { $AppResourceGroup = $ResourceGroup }
 
 az container create `
     --resource-group $ResourceGroup `
@@ -27,7 +32,7 @@ az container create `
     --azure-file-volume-account-key $StorageKey `
     --azure-file-volume-share-name $StorageShare `
     --azure-file-volume-mount-path '/mnt/letsencrypt' `
-    --environment-variables EMAIL="$Email" DOMAIN="$Domain" WILDCARD=$Wildcard RESOURCE_GROUP=$ResourceGroup ZONE_NAME=$ZoneName APP_SERVICE=$AppService ACME_SERVER=$AcmeServer `
+    --environment-variables EMAIL="$Email" DOMAIN="$Domain" WILDCARD=$Wildcard RESOURCE_GROUP=$AppResourceGroup DNS_RESOURCE_GROUP=$DnsResourceGroup ZONE_NAME=$ZoneName APP_SERVICE=$AppService ACME_SERVER=$AcmeServer `
     --output table
 
 do {
