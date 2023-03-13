@@ -72,5 +72,5 @@ Planned Improvements
 * ~~Support wildcard certificates~~
 * Support multiple domains per certificate
 * Support multiple web apps per certificate
-* Investigate using KeyVault to deploy the certificate to web apps [Web App Certificate](https://blogs.msdn.microsoft.com/appserviceteam/2016/05/24/deploying-azure-web-app-certificate-through-key-vault/)
+* ~~Investigate using KeyVault to deploy the certificate to web apps [Web App Certificate](https://blogs.msdn.microsoft.com/appserviceteam/2016/05/24/deploying-azure-web-app-certificate-through-key-vault/)~~
 * Try to find a more limited permission scope than Contributor on the entire resource group

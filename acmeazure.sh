@@ -6,6 +6,12 @@ if [ -f /mnt/letsencrypt/etc.tar.gz ]; then
     tar -xzf /mnt/letsencrypt/etc.tar.gz -C /
 fi
 
+if [ $KEY_VAULT ]; then
+    export DEPLOY_HOOK="//acmeazure//azurekeyvaultimport.sh"
+else
+    export DEPLOY_HOOK="//acmeazure//azurewebappbind.sh"
+fi
+
 certbotargs=(
     "certonly"
     "--manual"
@@ -13,7 +19,7 @@ certbotargs=(
     "--preferred-challenges" "dns-01"
     "--manual-auth-hook" "//acmeazure//azurednsauthenticator.sh"
     "--manual-cleanup-hook" "//acmeazure//azurednscleanup.sh"
-    "--deploy-hook" "//acmeazure//azurewebappbind.sh"
+    "--deploy-hook" $DEPLOY_HOOK
     "--agree-tos"
     "--manual-public-ip-logging-ok"
     "--server" "$ACME_SERVER"

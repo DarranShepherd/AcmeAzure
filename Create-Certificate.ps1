@@ -11,6 +11,7 @@ Param(
     $ZoneName,
     $AppResourceGroup,
     $AppService,
+    $KeyVault,
     $Wildcard="false",
     $AciName="letsencrypt",
     $AcmeServer="https://acme-v02.api.letsencrypt.org/directory"
@@ -32,7 +33,7 @@ az container create `
     --azure-file-volume-account-key $StorageKey `
     --azure-file-volume-share-name $StorageShare `
     --azure-file-volume-mount-path '/mnt/letsencrypt' `
-    --environment-variables EMAIL="$Email" DOMAIN="$Domain" WILDCARD=$Wildcard RESOURCE_GROUP=$AppResourceGroup DNS_RESOURCE_GROUP=$DnsResourceGroup ZONE_NAME=$ZoneName APP_SERVICE=$AppService ACME_SERVER=$AcmeServer `
+    --environment-variables EMAIL="$Email" DOMAIN="$Domain" WILDCARD=$Wildcard RESOURCE_GROUP=$AppResourceGroup DNS_RESOURCE_GROUP=$DnsResourceGroup ZONE_NAME=$ZoneName APP_SERVICE=$AppService KEY_VAULT=$KeyVault ACME_SERVER=$AcmeServer `
     --output table
 
 do {
