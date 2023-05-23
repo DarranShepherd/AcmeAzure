@@ -33,6 +33,7 @@ fi
 
 certbot "${certbotargs[@]}"
 
-tar -cpzf /mnt/letsencrypt/etc.tar.gz -C / etc/letsencrypt/
-
-cp /var/log/letsencrypt/letsencrypt.log /mnt/letsencrypt/
+if [ -d /mnt/letsencrypt ]; then
+    tar -cpzf /mnt/letsencrypt/etc.tar.gz -C / etc/letsencrypt/
+    cp /var/log/letsencrypt/letsencrypt.log /mnt/letsencrypt/
+fi
